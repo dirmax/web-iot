@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  iot:
+    build:
+      context: ./Docker
+      dockerfile: Dockerfile-dev
+    container_name: api-iot
+    ports:
+      - 80:80
+      - 3306:3306
+    volumes:
+      - ./:/var/www/:cached
+    tty: true

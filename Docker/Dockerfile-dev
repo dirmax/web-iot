@@ -1,0 +1,4 @@
+FROM evroopt/yotta
+
+COPY ./keys/* /root/.ssh/
+RUN chmod 600 /root/.ssh/*
