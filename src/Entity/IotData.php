@@ -5,10 +5,13 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\IotSoilRepository")
- * @ORM\Table(indexes={@ORM\Index(name="soil__chipid", columns={"chipid"})})
+ * @ORM\Entity(repositoryClass="App\Repository\IotDataRepository")
+ * @ORM\Table(indexes={
+ *     @ORM\Index(name="iotdata__chipid", columns={"chipid"}),
+ *     @ORM\Index(name="iotdata__datatype", columns={"value_type"}),
+ * })
  */
-class IotSoil
+class IotData
 {
     /**
      * @ORM\Id()
@@ -18,19 +21,14 @@ class IotSoil
     private $id;
 
     /**
-     * @ORM\Column(type="float", nullable=true)
+     * @ORM\Column(type="string", length=255)
      */
-    private $humidity;
+    private $valueType;
 
     /**
-     * @ORM\Column(type="float", nullable=true)
+     * @ORM\Column(type="float")
      */
-    private $temperature;
-
-    /**
-     * @ORM\Column(type="float", nullable=true)
-     */
-    private $soil_humidity_raw;
+    private $value;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -57,38 +55,26 @@ class IotSoil
         return $this->id;
     }
 
-    public function getHumidity(): ?float
+    public function getValueType(): ?string
     {
-        return $this->humidity;
+        return $this->valueType;
     }
 
-    public function setHumidity(?float $humidity): self
+    public function setValueType(string $valueType): self
     {
-        $this->humidity = $humidity;
+        $this->valueType = $valueType;
 
         return $this;
     }
 
-    public function getTemperature(): ?float
+    public function getValue(): ?float
     {
-        return $this->temperature;
+        return $this->value;
     }
 
-    public function setTemperature(?float $temperature): self
+    public function setValue(?float $value): self
     {
-        $this->temperature = $temperature;
-
-        return $this;
-    }
-
-    public function getSoilHumidityRaw(): ?float
-    {
-        return $this->soil_humidity_raw;
-    }
-
-    public function setSoilHumidityRaw(?float $soil_humidity_raw): self
-    {
-        $this->soil_humidity_raw = $soil_humidity_raw;
+        $this->value = $value;
 
         return $this;
     }

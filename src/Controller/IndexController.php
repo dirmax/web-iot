@@ -7,28 +7,31 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\SerializerInterface;
-use App\Entity\IotSoil;
-use App\Repository\IotSoilRepository;
+use App\Entity\IotData;
+use App\Repository\IotDataRepository;
 
 class IndexController extends AbstractController
 {
     /**
-     * @Route("/api/1.0/soil", name="api-post-soil")
+     * @Route("/api/1.0/iot-data", name="api-post-iot-data", methods={"POST"})
      */
-    public function index(Request $request)
+    public function iotDataSave(Request $request)
     {
-        $data = json_decode($request->getContent());
+        $json = json_decode($request->getContent());
 
-        if ($data && isset($data->chipid)) {
-            $iotSoil = new IotSoil();
-            $iotSoil->setChipid($data->chipid);
-            $iotSoil->setFreeMemory($data->free_memory ?? null);
-            $iotSoil->setSoilHumidityRaw($data->soil_humidity ?? null);
-            $iotSoil->setTemperature($data->temperature ?? null);
-            $iotSoil->setHumidity($data->humidity ?? null);
+        if (isset($json->data) && isset($json->chipid)) {
 
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($iotSoil);
+            foreach ($json->data as $item) {
+                $iotData = new IotData();
+                $iotData->setChipid($json->chipid);
+                $iotData->setFreeMemory($json->free_memory ?? null);
+                $iotData->setValue($item->value);
+                $iotData->setValueType($item->type);
+
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($iotData);
+            }
+
             $entityManager->flush();
 
             return $this->json([
@@ -44,12 +47,16 @@ class IndexController extends AbstractController
     }
 
     /**
-     * @Route("/api/1.0/iot-data", name="api-get-iot-data")
+     * @Route("/api/1.0/iot-data", name="api-get-iot-data", methods={"GET"})
      */
-    public function iotData(Request $request, SerializerInterface $serializer, IotSoilRepository $repository)
+    public function iotDataRead(Request $request, SerializerInterface $serializer, IotDataRepository $repository)
     {
+        $chipId = $request->get('chipid');
+        $type = $request->get('type');
+        $limit = max($request->get('limit', 100), 10000);
+
         return JsonResponse::fromJsonString($serializer->serialize([
-            'data' => $repository->findByChipId('a4cf126dc3a0'),
+            'data' => $repository->findByChipId($chipId, $type, $limit),
         ], 'json'));
     }
 }

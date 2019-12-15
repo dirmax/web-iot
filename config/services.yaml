@@ -23,6 +23,10 @@ services:
         resource: '../src/Controller'
         tags: ['controller.service_arguments']
 
+    Symfony\Component\Serializer\Normalizer\DateTimeNormalizer:
+        public: false
+        tags: [serializer.normalizer]
+
     Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer:
         public: false
         tags: [serializer.normalizer]
