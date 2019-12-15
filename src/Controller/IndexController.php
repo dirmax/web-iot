@@ -5,7 +5,10 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Serializer\SerializerInterface;
 use App\Entity\IotSoil;
+use App\Repository\IotSoilRepository;
 
 class IndexController extends AbstractController
 {
@@ -38,5 +41,15 @@ class IndexController extends AbstractController
                 'error_message' => 'Invalid JSON format',
             ]);
         }
+    }
+
+    /**
+     * @Route("/api/1.0/iot-data", name="api-get-iot-data")
+     */
+    public function iotData(Request $request, SerializerInterface $serializer, IotSoilRepository $repository)
+    {
+        return JsonResponse::fromJsonString($serializer->serialize([
+            'data' => $repository->findByChipId('a4cf126dc3a0'),
+        ], 'json'));
     }
 }

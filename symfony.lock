@@ -222,6 +222,9 @@
             "config/routes.yaml"
         ]
     },
+    "symfony/serializer": {
+        "version": "v5.0.1"
+    },
     "symfony/service-contracts": {
         "version": "v2.0.1"
     },

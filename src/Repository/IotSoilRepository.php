@@ -19,32 +19,21 @@ class IotSoilRepository extends ServiceEntityRepository
         parent::__construct($registry, IotSoil::class);
     }
 
-    // /**
-    //  * @return IotSoil[] Returns an array of IotSoil objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * Получаем данные по чипу
+     * @param  string $value
+     * @param  int $limit
+     * @return IotSoil[]
+     */
+    public function findByChipId($chipid, $limit = 100)
     {
         return $this->createQueryBuilder('i')
-            ->andWhere('i.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('i.id', 'ASC')
-            ->setMaxResults(10)
+            ->andWhere('i.chipid = :val')
+            ->setParameter('val', $chipid)
+            ->setMaxResults($limit)
+            ->orderBy('i.id', 'DESC')
             ->getQuery()
             ->getResult()
         ;
     }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?IotSoil
-    {
-        return $this->createQueryBuilder('i')
-            ->andWhere('i.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

@@ -49,7 +49,7 @@ class IotSoil
 
     public function __construct()
     {
-        $this->created_at = new \DateTime(); 
+        $this->created_at = new \DateTime();
     }
 
     public function getId(): ?int
@@ -117,7 +117,7 @@ class IotSoil
         return $this;
     }
 
-    public function getCreatedAt(): ?datetime
+    public function getCreatedAt(): ?\Datetime
     {
         return $this->created_at;
     }
