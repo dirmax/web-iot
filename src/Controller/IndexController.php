@@ -65,7 +65,7 @@ class IndexController extends AbstractController
     {
         $chipId = $request->get('chipid');
         $type = $request->get('type');
-        $limit = max($request->get('limit', 100), 10000);
+        $limit = $request->get('limit', 1000);
 
         return JsonResponse::fromJsonString($serializer->serialize([
             'data' => $repository->findByChipId($chipId, $type, $limit),
