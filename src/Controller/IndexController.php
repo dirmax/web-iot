@@ -13,6 +13,18 @@ use App\Repository\IotDataRepository;
 class IndexController extends AbstractController
 {
     /**
+     * @Route("/api/1.0/iot-list-type", name="api-iot-list-type", methods={"GET"})
+     */
+     public function iotChipDataTypes(Request $request, SerializerInterface $serializer, IotDataRepository $repository)
+     {
+         $chipId = $request->get('chipid');
+
+         return JsonResponse::fromJsonString($serializer->serialize([
+             'data' => $repository->chipDataTypes($chipId),
+         ], 'json'));
+     }
+
+    /**
      * @Route("/api/1.0/iot-data", name="api-post-iot-data", methods={"POST"})
      */
     public function iotDataSave(Request $request)

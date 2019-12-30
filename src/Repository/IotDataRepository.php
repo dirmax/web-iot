@@ -38,4 +38,19 @@ class IotDataRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+
+    /**
+     * Получаем доступные данные по чипуам
+     * @param  string $chipid
+     */
+    public function chipDataTypes($chipid)
+    {
+        return $this->createQueryBuilder('i')
+            ->select('DISTINCT(i.valueType) as type')
+            ->andWhere('i.chipid = :chipid')
+            ->setParameter('chipid', $chipid)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }
